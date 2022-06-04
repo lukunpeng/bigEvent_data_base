@@ -36,7 +36,7 @@ $(function () {
         $.ajax({
             method: "POST",
             // url:'http://www.liulongbin.top:3007/api/reguser',
-            url: '/api/reg',
+            url: '/api/reguser',
             // url:'http://www.liulongbin.top:3008/my/cate/list',
             data,
             success(res) {
