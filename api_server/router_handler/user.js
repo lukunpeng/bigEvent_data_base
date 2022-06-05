@@ -47,7 +47,6 @@ exports.regUser = (req, res) => {
             if (results.affectedRows !== 1) {
                 // return res.send({ status: 0, message: '注册用户失败，请稍后再试！' })
                 return res.cc('注册用户失败，请稍后再试！')
-
             }
             // res.send({ status: 0, message: '注册成功！' })
             res.cc('注册成功', 0)
@@ -60,13 +59,12 @@ exports.regUser = (req, res) => {
 exports.login = (req, res) => {
     const userinfo = req.body
 
-    const sql = `select * from ev_users where username=?`
+    const sql = `select * from ev_users08 where username=?`
 
     db.query(sql, userinfo.username, function (err, results) {
         // 执行 SQL 语句失败
         if (err) return res.cc(err)
         // 执行 SQL 语句成功，但是查询到数据条数不等于 1
-        console.log(2);
         if (results.length !== 1) return res.cc('登录失败！')
         // TODO：判断用户输入的登录密码是否和数据库中的密码一致
         // 拿着用户输入的密码,和数据库中存储的密码进行对比
