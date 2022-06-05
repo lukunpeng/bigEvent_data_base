@@ -5,7 +5,11 @@ const app = express()
 
 const joi = require('@hapi/joi')
 
+// 导入配置文件
+const config = require('./config')
 
+// 解析 token 的中间件
+const expressJWT = require('express-jwt')
 
 // 导入 cors 中间件
 const cors = require('cors')
@@ -15,6 +19,12 @@ app.use(cors())
 
 // 通过如下的代码，配置解析 application/x-www-form-urlencoded 格式的表单数据的中间件：
 app.use(express.urlencoded({ extended: false }))
+
+
+// 使用 .unless({ path: [/^\/api\//] }) 指定哪些接口不需要进行 Token 的身份认证
+app.use(expressJWT({ secret: config.jwtSecretKey }).unless({ path: [/^\/api\//] }))
+
+
 
 // 一定要在路由之前，封装 res.cc 函数
 app.use((req, res, next) => {
@@ -37,6 +47,9 @@ app.use('/api', userRouter)
 app.use(function (err, req, res, next) {
     // 数据验证失败
     if (err instanceof joi.ValidationError) return res.cc(err)
+
+      // 捕获身份认证失败的错误
+  if (err.name === 'UnauthorizedError') return res.cc('身份认证失败！')
     // 未知错误
     res.cc(err)
   })
