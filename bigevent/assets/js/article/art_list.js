@@ -53,7 +53,6 @@ $(function () {
             url: '/my/article/list',
             data: q,
             success(res) {
-                console.log(res);
                 if (res.code !== 0) {
                     return layer.msg('获取文章失败')
                 }

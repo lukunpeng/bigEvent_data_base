@@ -67,7 +67,7 @@ exports.addArticleList = (req, res) => {
         if (err) return res.cc(err)
         // 2. 执行 SQL 语句成功
 
-        const sql = 'select count(*) from ev_articles08;'
+        const sql = 'select count(*) from ev_articles08 where ev_articles08.is_delete=0;'
         db.query(sql, (err, result) => {
             // 1. 执行 SQL 语句失败
             if (err) return res.cc(err)
@@ -108,7 +108,7 @@ exports.delArticle = (req, res) => {
 }
 
 // 编辑的时候获取文章信息
-exports.getArticleId=(req,res)=>{
+exports.getArticleId = (req, res) => {
     const sql = `select * from ev_articles08 where id=?`
     db.query(sql, req.query.id, (err, results) => {
         // 执行 SQL 语句失败
