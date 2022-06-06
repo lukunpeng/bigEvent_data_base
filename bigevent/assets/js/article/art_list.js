@@ -53,6 +53,7 @@ $(function () {
             url: '/my/article/list',
             data: q,
             success(res) {
+                console.log(res);
                 if (res.code !== 0) {
                     return layer.msg('获取文章失败')
                 }
@@ -121,8 +122,8 @@ $(function () {
         console.log(id);
         layer.confirm('确认删除吗?', { icon: 3, title: '提示' }, function (index) {
             $.ajax({
-                method: 'DELETE',
-                url: '/my/article/info?id=' + id,
+                method: 'GET',
+                url: '/my/article/delete/' + id,
                 success(res) {
                     if (res.code !== 0) {
                         return layer.msg('删除文章失败')

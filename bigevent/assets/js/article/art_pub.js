@@ -13,6 +13,7 @@ $(function () {
                 method: 'GET',
                 url: '/my/article/info?id=' + id,
                 success(res) {
+                    console.log(res);
                     if (res.code !== 0) {
                         return layer.msg('获取失败')
                     }
@@ -57,6 +58,7 @@ $(function () {
             method: 'GET',
             url: '/my/cate/list',
             success: function (res) {
+                console.log(res);
                 if (res.code !== 0) {
                     return layer.msg('初始化文章分类失败！')
                 }
@@ -138,9 +140,10 @@ $(function () {
     })
     function publishArticle(fd) {
         if (flag) {
+            console.log(123);
             $.ajax({
-                method: 'PUT',
-                url: '/my/article/info',
+                method: 'POST',
+                url: '/my/article/edit',
                 data: fd,
                 // 注意：如果向服务器提交的是 FormData 格式的数据，
                 // 必须添加以下两个配置项
