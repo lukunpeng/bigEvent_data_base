@@ -17,7 +17,7 @@ exports.regUser = (req, res) => {
     const userinfo = req.body
     // 判断数据是否合法
     // if (!userinfo.username || !userinfo.password) {
-    //     return res.send({ status: 1, message: '用户名或密码不能为空！' })
+    //     return res.send({ code: 1, message: '用户名或密码不能为空！' })
     // }
     // 定义 SQL 语句，查询用户名是否被占用
     const sqlStr = `select * from ev_users08 where username=?`
@@ -25,12 +25,12 @@ exports.regUser = (req, res) => {
         // 首先判错  1、执行sql语句是否成功  2、判断用户名是否被占用
         // 1、执行sql语句是否成功
         if (err) {
-            // return res.send({ status: 1, message: err.message })
+            // return res.send({ code: 1, message: err.message })
             return res.cc(err)
         }
         // 2、判断用户名是否被占用
         if (results.length > 0) {
-            // return res.send({ status: 1, message: '用户名被占用，请更改用户名！' })
+            // return res.send({ code: 1, message: '用户名被占用，请更改用户名！' })
             return res.cc('用户名被占用，请更改用户名！')
 
         }
@@ -45,10 +45,10 @@ exports.regUser = (req, res) => {
             if (err) return res.send({ code: 1, message: err.message })
             // SQL 语句执行成功，但影响行数不为 1
             if (results.affectedRows !== 1) {
-                // return res.send({ status: 0, message: '注册用户失败，请稍后再试！' })
+                // return res.send({ code: 0, message: '注册用户失败，请稍后再试！' })
                 return res.cc('注册用户失败，请稍后再试！')
             }
-            // res.send({ status: 0, message: '注册成功！' })
+            // res.send({ code: 0, message: '注册成功！' })
             res.cc('注册成功', 0)
 
         })
@@ -82,7 +82,7 @@ exports.login = (req, res) => {
             expiresIn: '10h', // token 有效期为 10 个小时
         })
         res.send({
-            status: 0,
+            code: 0,
             message: '登录成功！',
             // 为了方便客户端使用 Token，在服务器端直接拼接上 Bearer 的前缀
             token: 'Bearer ' + tokenStr,

@@ -41,7 +41,7 @@ $(function(){
     $('.layui-form').on('submit',function(e){
         e.preventDefault()
         $.ajax({
-            method:'PUT',
+            method:'POST',
             url:'/my/userinfo',
             // 获取表单数据
             data:$(this).serialize(),

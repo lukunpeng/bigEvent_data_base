@@ -43,10 +43,28 @@ app.use((req, res, next) => {
 const userRouter = require('./router/user')
 app.use('/api', userRouter)
 
+// 托管静态资源文件
+app.use('/uploads', express.static('./uploads'))
+
 // 导入并使用用户信息路由模块
 const userinfoRouter = require('./router/userinfo')
 // 注意：以 /my 开头的接口，都是有权限的接口，需要进行 Token 身份认证
 app.use('/my', userinfoRouter)
+
+
+
+
+// 导入并使用文章分类路由模块
+const artCateRouter = require('./router/artcate')
+// 为文章分类的路由挂载统一的访问前缀 /my/article
+app.use('/my/cate', artCateRouter)
+
+
+
+// 导入并使用文章路由模块
+const articleRouter = require('./router/article')
+// 为文章的路由挂载统一的访问前缀 /my/article
+app.use('/my/article', articleRouter)
 
 
 // 错误中间件

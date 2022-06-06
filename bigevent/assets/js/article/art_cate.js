@@ -31,10 +31,11 @@ $(function () {
           e.preventDefault()
           $.ajax({
             method: 'POST',
-            url: '/my/cate/add',
+            url: '/my/cate/addcates',
             data: $(this).serialize(),
             success: function (res) {
               console.log('发起了更新分类请求');
+              console.log(res);
               if (res.code !== 0) {
                 return layer.msg('新增分类失败！')
               }
@@ -106,11 +107,12 @@ $(function () {
     // 为删除类添加删除按钮  只要是事件委托 就往大了绑
     $('body').on('click', '.btn-delete', function (e) {
       let id = $(this).attr('data-id')
+      console.log(id);
       // console.log(id);
       layer.confirm('确认删除?', { icon: 3, title: '提示' }, function (index) {
         $.ajax({
-          method: 'DELETE',
-          url:'/my/cate/del?id='+id, //要求是查询字符串的形式，必须这么拼
+          method: 'get',
+          url:'/my/cate/deletecate?id='+id, //要求是查询字符串的形式，必须这么拼
           success(res) {
             if (res.code !== 0) {
               return layer.msg(res.message)
