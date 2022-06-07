@@ -33,8 +33,10 @@ $(function () {
     $('#form-search').on('submit', function (e) {
         e.preventDefault()
         let cate_id = $('[name=cate_id]').val()
+        let cateid = $('[name=cateid]').val()
         let state = $('[name=state]').val()
         q.cate_id = cate_id
+        q.cateid = cateid
         q.state = state
         initTable()
     })
@@ -73,6 +75,7 @@ $(function () {
             method: 'GET',
             url: '/my/cate/list',
             success(res) {
+                console.log(res);
                 if (res.code !== 0) {
                     return layer.msg('获取分类列表失败')
                 }

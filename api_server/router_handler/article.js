@@ -38,51 +38,55 @@ exports.addArticle = (req, res) => {
         // 发布文章成功
         res.cc('发布文章成功', 0)
     })
-
-
-
-
-
-
-
-
-
-
-
-
-
-    // console.log(req.body) // 文本类型的数据
-    // console.log('--------分割线----------')
-    // console.log(req.file) // 文件类型的数据
-    // res.send('ok')
 }
 
-// 定义获取文章列表的处理函数
+
+// 定义筛选，渲染，分页，获取文章数据路由
 exports.addArticleList = (req, res) => {
-
-    // const sql = 'SELECT * FROM my_db_01.ev_articles08;'
-    const sql = 'select articles.Id, articles.title, cate.name as cate_name, articles.pub_date, articles.state from ev_articles08 articles inner join ev_article_cate08 cate on articles.cate_id = cate.Id and articles.is_delete=0;'
-    db.query(sql, (err, results) => {
-        // 1. 执行 SQL 语句失败
-        if (err) return res.cc(err)
-        // 2. 执行 SQL 语句成功
-
+    if (req.query.state && req.query.cate_id) {
+        const sql = `select count(*) from (select articles.Id, articles.title, cate.name as cate_name, articles.pub_date, articles.state from ev_articles08  articles inner join ev_article_cate08 cate on articles.cate_id = cate.Id and articles.is_delete=0  and articles.state="${req.query.state}" and articles.cate_id="${req.query.cate_id}") as total;`
+        db.query(sql, (err, results) => {
+            // 1. 执行 SQL 语句失败
+            if (err) return res.cc(err)
+            // 2. 执行 SQL 语句成功
+            const total = results[0]['count(*)']
+            const sql = `select articles.Id, articles.title, cate.name as cate_name, articles.pub_date, articles.state from ev_articles08 articles inner join ev_article_cate08 cate on articles.cate_id = cate.Id and articles.is_delete=0 and articles.state="${req.query.state}" and articles.cate_id="${req.query.cate_id}" limit ${req.query.pagesize - 0} offset ${(req.query.pagenum - 1) * req.query.pagesize};`
+            db.query(sql, (err, results) => {
+                // 1. 执行 SQL 语句失败
+                if (err) return res.cc(err)
+                // 2. 执行 SQL 语句成功
+                res.send({
+                    code: 0,
+                    message: '获取文章分类列表成功！',
+                    data: results,
+                    total,
+                })
+            })
+        })
+    } else {
         const sql = 'select count(*) from ev_articles08 where ev_articles08.is_delete=0;'
         db.query(sql, (err, result) => {
             // 1. 执行 SQL 语句失败
             if (err) return res.cc(err)
-            const total = result[0]['count(*)']
-            res.send({
-                code: 0,
-                message: '获取文章分类列表成功！',
-                data: results,
-                total,
+            const sql = `select articles.Id, articles.title, cate.name as cate_name, articles.pub_date, articles.state from ev_articles08 articles inner join ev_article_cate08 cate on articles.cate_id = cate.Id and articles.is_delete=0 limit ${req.query.pagesize - 0} offset ${(req.query.pagenum - 1) * req.query.pagesize};`
+            db.query(sql, (err, results) => {
+                // 1. 执行 SQL 语句失败
+                if (err) return res.cc(err)
+                // 2. 执行 SQL 语句成功
+                const total = result[0]['count(*)']
+                res.send({
+                    code: 0,
+                    message: '获取文章分类列表成功！',
+                    data: results,
+                    total,
+                })
             })
         })
 
+    }
 
-    })
 }
+
 
 // 定义删除文章的处理函数
 exports.delArticle = (req, res) => {
@@ -100,11 +104,6 @@ exports.delArticle = (req, res) => {
         // 删除文章分类成功
         res.cc('删除文章成功！', 0)
     })
-
-
-
-
-
 }
 
 // 编辑的时候获取文章信息
@@ -124,12 +123,10 @@ exports.getArticleId = (req, res) => {
             data: results[0],
         })
     })
-
 }
 
 // 更新文章内容
 exports.editArticleId = (req, res) => {
-    console.log('update', req.body)
     // 定义查询 分类名称 与 分类别名 是否被占用的 SQL 语句
     const sql = `select * from ev_articles08 where Id<>? and (title=? or content=?)`
 
