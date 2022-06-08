@@ -10,6 +10,7 @@ const config = require('./config')
 
 // 解析 token 的中间件
 const expressJWT = require('express-jwt')
+const path =require('path')
 
 // 导入 cors 中间件
 const cors = require('cors')
@@ -20,6 +21,8 @@ app.use(cors())
 // 通过如下的代码，配置解析 application/x-www-form-urlencoded 格式的表单数据的中间件：
 app.use(express.urlencoded({ extended: false }))
 
+// 托管静态资源文件
+app.use('/uploads', express.static(path.join(__dirname,'./uploads')))
 
 // 使用 .unless({ path: [/^\/api\//] }) 指定哪些接口不需要进行 Token 的身份认证
 app.use(expressJWT({ secret: config.jwtSecretKey }).unless({ path: [/^\/api\//] }))
@@ -43,8 +46,7 @@ app.use((req, res, next) => {
 const userRouter = require('./router/user')
 app.use('/api', userRouter)
 
-// 托管静态资源文件
-app.use('/uploads', express.static('./uploads'))
+
 
 // 导入并使用用户信息路由模块
 const userinfoRouter = require('./router/userinfo')

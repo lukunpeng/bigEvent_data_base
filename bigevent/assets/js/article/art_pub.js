@@ -17,32 +17,33 @@ $(function () {
                     if (res.code !== 0) {
                         return layer.msg('获取失败')
                     }
-                    let imgURL = 'http://www.liulongbin.top:3008' + res.data.cover_img
+                    // let imgURL = 'http://www.liulongbin.top:3008' + res.data.cover_img
                     // let imgURL = 'http://127.0.0.1.top:3008' + res.data.cover_img
-                    // let imgURL = 'http://127.0.0.1:3008' + res.data.cover_img
+                    let imgURL = 'http://127.0.0.1:3008' + res.data.cover_img
+                    console.log(imgURL);
                     $('#image').attr('src', imgURL)
                     console.log(res);
 
                     form.val('form-pub', res.data)
 
-                    // // 1. 初始化图片裁剪器
-                    // let $image = $('#image')
-                    // // 2. 裁剪选项
-                    // let options = {
-                    //     aspectRatio: 400 / 280,
-                    //     preview: '.img-preview'
-                    // }
-                    // // 3. 初始化裁剪区域
-                    // $image.cropper(options)
-                    // // 根据文件，创建对应的 URL 地址
-                    // let newImgURL = imgURL
-                    // // 为裁剪区域重新设置图片
-                    // // newImgURL = localStorage.getItem('url')
-                    // $image
-                    //     .cropper('destroy') // 销毁旧的裁剪区域
-                    //     .attr('src', newImgURL) // 重新设置图片路径
-                    //     .cropper(options) // 重新初始化裁剪区域
-                    // $('[name=content]').html(res.data.content)
+                    // 1. 初始化图片裁剪器
+                    let $image = $('#image')
+                    // 2. 裁剪选项
+                    let options = {
+                        aspectRatio: 400 / 280,
+                        preview: '.img-preview'
+                    }
+                    // 3. 初始化裁剪区域
+                    $image.cropper(options)
+                    // 根据文件，创建对应的 URL 地址
+                    let newImgURL = imgURL
+                    // 为裁剪区域重新设置图片
+                    // newImgURL = localStorage.getItem('url')
+                    $image
+                        .cropper('destroy') // 销毁旧的裁剪区域
+                        .attr('src', newImgURL) // 重新设置图片路径
+                        .cropper(options) // 重新初始化裁剪区域
+                    $('[name=content]').html(res.data.content)
                     initEditor()
                 }
             })
