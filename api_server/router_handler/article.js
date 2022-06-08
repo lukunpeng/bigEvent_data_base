@@ -128,18 +128,6 @@ exports.getArticleId = (req, res) => {
 // 更新文章内容
 exports.editArticleId = (req, res) => {
     // 定义查询 分类名称 与 分类别名 是否被占用的 SQL 语句
-    const sql = `select * from ev_articles08 where Id<>? and (title=? or content=?)`
-
-    db.query(sql, [req.body.Id, req.body.title, req.body.content], (err, results) => {
-        // 执行 SQL 语句失败
-        if (err) return res.cc(err)
-        // 分类名称 和 分类别名 都被占用
-        if (results.length === 2) return res.cc('分类名称与别名被占用，请更换后重试！')
-        if (results.length === 1 && results[0].title === req.body.title && results[0].content === req.body.content) return res.cc('分类名称与别名被占用，请更换后重试！')
-        // 分类名称 或 分类别名 被占用
-        // if (results.length === 1 && results[0].title === req.body.title) return res.cc('分类名称被占用，请更换后重试！')
-        // if (results.length === 1 && results[0].content === req.body.content) return res.cc('分类别名被占用，请更换后重试！')
-
         // TODO：更新文章分类
 
         // 定义更新文章分类的 SQL 语句：
@@ -154,7 +142,7 @@ exports.editArticleId = (req, res) => {
             // 更新文章分类成功
             res.cc('更新文章分类成功！', 0)
         })
-    })
+    
 
 
 }

@@ -20,9 +20,9 @@ $(function () {
                     // let imgURL = 'http://www.liulongbin.top:3008' + res.data.cover_img
                     // let imgURL = 'http://127.0.0.1.top:3008' + res.data.cover_img
                     let imgURL = 'http://127.0.0.1:3008' + res.data.cover_img
-                    console.log(imgURL);
+                    // console.log(imgURL);
                     $('#image').attr('src', imgURL)
-                    console.log(res);
+                    // console.log(res);
 
                     form.val('form-pub', res.data)
 
@@ -139,6 +139,7 @@ $(function () {
                 // 5. 将文件对象，存储到 fd 中
                 fd.append('cover_img', blob)
                 // 6. 发起 ajax 数据请求
+                console.log(blob);
                 publishArticle(fd)
             })
     })
@@ -154,6 +155,7 @@ $(function () {
                     content: $('[name=content]').val(),
                     cate_id: $('[name=cate_id]').val(),
                     state:art_state,
+                    
                 },
                 // 注意：如果向服务器提交的是 FormData 格式的数据，
                 // 必须添加以下两个配置项
